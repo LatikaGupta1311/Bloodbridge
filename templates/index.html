@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloodBridge - Connecting Lives, Saving Lives</title>
+  <style>
+    :root { 
+      --primary: #d90429; 
+      --primary-dark: #a0001e;
+      --dark: #1e293b; 
+      --bg: #f8fafc; 
+      --card: #ffffff; 
+      --border: #e2e8f0; 
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--dark); line-height: 1.6; }
+    
+    /* Header & Nav */
+    header { background: #fff; padding: 0.8rem 2.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-logo { width: 40px; height: 40px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .brand-text h1 { font-size: 1.3rem; font-weight: 800; color: #0f172a; line-height: 1.1; }
+    .brand-text span { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+
+    .nav-tabs { display: flex; gap: 12px; align-items: center; }
+    .nav-btn { background: none; border: none; padding: 0.6rem 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; color: #475569; font-size: 0.95rem; transition: 0.2s; }
+    .nav-btn:hover { color: var(--primary); }
+    .nav-btn.active { color: var(--primary); font-weight: 700; border-bottom: 2px solid var(--primary); border-radius: 0; }
+    .nav-action-btn { background: var(--primary); color: #fff; padding: 0.6rem 1.4rem; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+    .nav-action-btn:hover { background: var(--primary-dark); }
+    .nav-action-btn-outline { border: 1px solid #cbd5e1; background: transparent; color: #334155; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+    /* Layout & Cards */
+    .container { max-width: 1280px; margin: 2rem auto; padding: 0 1.5rem; }
+    .tab-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+    .tab-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .card { background: var(--card); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 1.8rem; border: 1px solid var(--border); }
+    h2 { margin-bottom: 1.5rem; color: var(--dark); font-weight: 800; font-size: 1.4rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .grid-reg { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    
+    /* Forms & Buttons */
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    label { font-size: 0.85rem; font-weight: 700; color: #475569; }
+    input, select { padding: 0.8rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; transition: 0.2s; }
+    input:focus, select:focus { border-color: var(--primary); outline: none; }
+    .btn { background: var(--primary); color: #fff; padding: 0.8rem 1.6rem; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2); }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: #fff; }
+    .btn-small { padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px; }
+
+    /* Home Hero */
+    .hero-wrapper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; padding: 3rem 0; }
+    @media (max-width: 992px) { .hero-wrapper { grid-template-columns: 1fr; text-align: center; } }
+    .hero-title { font-size: 3.3rem; font-weight: 900; line-height: 1.15; color: #0f172a; letter-spacing: -1px; margin-bottom: 1.2rem; }
+    .hero-title span { color: var(--primary); }
+    .hero-sub { font-size: 1.15rem; color: #64748b; margin-bottom: 2rem; max-width: 520px; }
+    .hero-btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    @media (max-width: 992px) { .hero-btn-group { justify-content: center; } }
+    
+    .hero-visual-area { position: relative; display: flex; justify-content: center; }
+    .hero-img-box { width: 100%; max-width: 480px; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; }
+    .hero-img-box img { width: 100%; height: 480px; object-fit: cover; display: block; }
+    .floating-badge { position: absolute; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 0.8rem 1.2rem; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 12px; }
+    .floating-bottom-left { bottom: 30px; left: 20px; }
+    .floating-bottom-right { bottom: 30px; right: 20px; }
+
+    /* Directory Table */
+    .filter-bar { background: #fff; padding: 1.5rem; border-radius: 12px; display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+    .table-custom { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+    .table-custom th { padding: 0 1.2rem; color: #64748b; font-weight: 700; text-align: left; text-transform: uppercase; font-size: 0.8rem; }
+    .table-custom tbody tr { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.2s; }
+    .table-custom tbody tr:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+    .table-custom td { padding: 1.2rem; border: none; font-size: 0.95rem; vertical-align: middle; }
+    .table-custom td:first-child { border-radius: 12px 0 0 12px; }
+    .table-custom td:last-child { border-radius: 0 12px 12px 0; }
+    
+    .bg-col { font-size: 1.8rem; font-weight: 900; color: var(--primary); text-align: center; background: #fff5f6; border-radius: 12px 0 0 12px !important; width: 80px; }
+    .badge { padding: 0.35rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; display: inline-block; }
+    .bg-green { background: #dcfce7; color: #166534; }
+    .bg-red { background: #fee2e2; color: #991b1b; }
+    .bg-vibrant { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; }
+    .bg-bank { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; }
+    
+    .timer-badge { font-weight: 800; padding: 0.4rem 0.8rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+    .timer-normal { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .timer-urgent { background: #fee2e2; color: #b91c1c; border: 2px solid #ef4444; animation: pulse 1s infinite alternate; }
+    @keyframes pulse { from { opacity: 0.85; transform: scale(1); } to { opacity: 1; transform: scale(1.03); } }
+
+    /* Enlarged Critical Shortage Banner */
+    .footer-live-zone { margin-top: 3.5rem; border-top: 3px dashed var(--border); padding-top: 2.5rem; }
+    
+    .stat-banner { 
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #31103f 100%); 
+      color: #fff; 
+      padding: 4rem 3.5rem; 
+      border-radius: 20px; 
+      margin-bottom: 2.5rem; 
+      display: grid; 
+      grid-template-columns: 1.5fr 1fr; /* Text left, Box right */
+      align-items: center; 
+      gap: 4rem; 
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.25); 
+    }
+    @media (max-width: 900px) { 
+      .stat-banner { grid-template-columns: 1fr; padding: 2.5rem 1.8rem; gap: 2rem; } 
+    }
+    .stat-banner-content h3 { font-size: 2.8rem; font-weight: 900; line-height: 1.2; margin: 12px 0 20px 0; letter-spacing: -0.5px; }
+    .stat-banner-content p { color: #cbd5e1; font-size: 1.25rem; line-height: 1.7; }
+    
+    .death-counter-box { 
+      text-align: right; /* Aligned exactly to the right */
+      background: rgba(239, 68, 68, 0.12); 
+      border: 2px solid rgba(239, 68, 68, 0.85); 
+      padding: 3.5rem 2.5rem; 
+      border-radius: 18px; 
+      box-shadow: 0 8px 30px rgba(239, 68, 68, 0.2); 
+    }
+    .death-counter-title { font-size: 1.1rem; font-weight: 800; color: #fca5a5; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.4; margin-bottom: 15px; }
+    .death-counter-num { font-size: 6.5rem; font-weight: 900; color: #f87171; font-family: 'Courier New', Courier, monospace; line-height: 1; margin-bottom: 15px; text-shadow: 0 0 25px rgba(248, 113, 113, 0.4); }
+    .death-counter-sub { color: #fca5a5; font-size: 1rem; font-weight: 600; }
+
+    .inventory-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .inventory-box { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--primary); padding: 1.2rem 0.8rem; border-radius: 12px; text-align: center; }
+    .inventory-box .grp { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
+    .inventory-box .liters { font-size: 1.15rem; font-weight: 800; color: var(--dark); margin: 4px 0; }
+
+    .stories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.2rem; }
+    .story-card { background: #fff; border-radius: 14px; border: 1px solid var(--border); padding: 1.5rem; }
+    .story-quote { font-style: italic; color: #475569; font-size: 0.95rem; margin-bottom: 1rem; }
+    .story-author { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--dark); font-size: 0.9rem; }
+    .story-avatar { width: 42px; height: 42px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+    .modal { background: #fff; padding: 1.5rem; border-radius: 16px; width: 90%; max-width: 350px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="brand" onclick="showTab('home')">
+    <div class="brand-logo">🩸</div>
+    <div class="brand-text">
+      <h1>BloodBridge</h1>
+      <span>Bridging Hearts. Saving Lives.</span>
+    </div>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-btn active" id="btn-tab-home" onclick="showTab('home')">Home</button>
+    <button class="nav-btn" id="btn-tab-directory" onclick="showTab('directory')">Find Blood</button>
+    <button class="nav-btn" id="btn-tab-request" onclick="showTab('request')">Emergency Request</button>
+    <button class="nav-btn" id="btn-tab-register" onclick="showTab('register')">Donate / Register</button>
+    <button class="nav-action-btn-outline" onclick="showTab('profile')">Login</button>
+    <button class="nav-action-btn" onclick="showTab('register')">Register</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ================= TAB 1: HOME PAGE ================= -->
+  <section id="tab-home" class="tab-section active">
+    <div class="hero-wrapper">
+      <div>
+        <div style="font-size: 0.9rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem;">
+          ✦ Verified Blood Availability Platform
+        </div>
+        <h1 class="hero-title">
+          Every Second Counts. <br><span>Every Drop Rescues A Life.</span>
+        </h1>
+        <p class="hero-sub">
+          "The blood you donate gives someone another chance at life. One day that someone may be a close relative, a friend, a loved one—or even you." Connecting donors, verified blood banks, and critical hospital requests across districts in real time.
+        </p>
+        <div class="hero-btn-group">
+          <button class="btn" onclick="showTab('directory')">🔍 Find Blood Now</button>
+          <button class="btn btn-outline" onclick="showTab('register')">❤️ Donate Blood</button>
+        </div>
+        
+        <div style="display: flex; gap: 2rem; margin-top: 3rem; color: #64748b; font-size: 0.85rem; font-weight: 600;">
+          <div>✓ Direct Consent Verified</div>
+          <div>✓ Verified Local Hubs</div>
+          <div>✓ Auto-Expiring Requisitions</div>
+        </div>
+      </div>
+
+      <div class="hero-visual-area">
+        <div class="hero-img-box">
+          <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1000&q=80" alt="Blood Donation">
+          <div class="floating-badge floating-bottom-left">
+            <span style="font-size: 1.4rem;">🩸</span>
+            <div>
+              <strong style="font-size: 1.1rem; color: var(--primary);">0.35L - 2.0L</strong>
+              <div style="font-size: 0.75rem; color: #64748b;">Instant Units Ready</div>
+            </div>
+          </div>
+          <div class="floating-badge floating-bottom-right">
+            <span style="font-size: 1.4rem;">🏥</span>
+            <div>
+              <strong style="font-size: 1.1rem; color: var(--dark);">100%</strong>
+              <div style="font-size: 0.75rem; color: #64748b;">Verified Banks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TAB 2: FIND BLOOD DIRECTORY ================= -->
+  <section id="tab-directory" class="tab-section">
+    <div class="filter-bar">
+      <div class="form-group" style="flex: 2; min-width: 250px;">
+        <label>Search Directory</label>
+        <input type="text" id="search-input" placeholder="Search name, city, PIN, or blood group (e.g. O+)" onkeyup="renderDirectory()">
+      </div>
+      <div class="form-group">
+        <label>Blood Group</label>
+        <select id="filter-bg" onchange="renderDirectory()">
+          <option value="">All Groups</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Max Distance</label>
+        <select id="filter-distance" onchange="renderDirectory()">
+          <option value="999">Any Distance</option>
+          <option value="5">Within 5 km</option>
+          <option value="10">Within 10 km</option>
+          <option value="20">Within 20 km</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Experience</label>
+        <select id="filter-times" onchange="renderDirectory()">
+          <option value="0">Any Donations</option>
+          <option value="1">1+ Donations</option>
+          <option value="3">3+ Donations</option>
+          <option value="6">6+ Donations</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sort By</label>
+        <select id="sort-select" onchange="renderDirectory()">
+          <option value="distance">Distance (Nearest)</option>
+          <option value="name">Name (A-Z)</option>
+        </select>
+      </div>
+      <div class="form-group" style="justify-content: center;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--primary);">
+          <input type="checkbox" id="hide-unavailable" onchange="renderDirectory()" style="width: 18px; height: 18px;"> Hide Unavailable
+        </label>
+      </div>
+    </div>
+    
+    <div style="overflow-x: auto; padding-bottom: 2rem;">
+      <table class="table-custom" id="directory-table">
+        <thead>
+          <tr>
+            <th style="text-align: center;">Group</th>
+            <th>Profile Identity</th>
+            <th>Contact Details</th>
+            <th>Location & PIN</th>
+            <th>Distance</th>
+            <th>Stock / Activity</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="directory-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= TAB 3: POST REQUEST ================= -->
+  <section id="tab-request" class="tab-section">
+    <div class="card">
+      <h2>🚨 Broadcast Urgent Blood Request</h2>
+      <form onsubmit="postRequest(event)">
+        <div class="grid-2">
+          <div class="form-group"><label>Patient Name *</label><input type="text" id="req-patient" required></div>
+          <div class="form-group"><label>Hospital Name *</label><input type="text" id="req-hospital" required></div>
+          <div class="form-group"><label>Contact Phone *</label><input type="tel" id="req-phone" required></div>
+          <div class="form-group"><label>Required Blood Group *</label>
+            <select id="req-bg">
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="form-group"><label>City *</label><input type="text" id="req-city" value="Delhi" required></div>
+          <div class="form-group"><label>PIN Code *</label><input type="text" id="req-pin" required></div>
+          <div class="form-group">
+            <label>Quantity Needed (Liters) *</label>
+            <input type="number" step="0.1" id="req-liters" value="0.35" min="0.1" required>
+            <small style="color:#64748b;">(Note: 1 Donor ≈ 350ml or 0.35L)</small>
+          </div>
+          <div class="form-group"><label>Time Needed (Auto-Expires After Time) *</label>
+            <select id="req-duration">
+              <option value="2">Critical (Within 2 Hours)</option>
+              <option value="6">Urgent (Within 6 Hours)</option>
+              <option value="12">Standard (Within 12 Hours)</option>
+              <option value="24">Next Day (Within 24 Hours)</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn" style="margin-top: 1.5rem; width: 100%;">Broadcast Alert to Network</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= TAB 4: REGISTER ================= -->
+  <section id="tab-register" class="tab-section">
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <button type="button" class="btn" onclick="toggleRegForm('donor')" id="btn-show-donor">👤 Register as Individual Donor</button>
+      <button type="button" class="btn btn-outline" onclick="toggleRegForm('bank')" id="btn-show-bank">🏥 Register a Blood Bank</button>
+    </div>
+
+    <!-- Individual Donor Registration -->
+    <div id="reg-donor-wrapper" class="grid-reg">
+      <div class="card" style="margin:0;">
+        <h2>Donor Profile Setup</h2>
+        <form onsubmit="registerDonor(event)">
+          <div class="grid-2">
+            <div class="form-group"><label>Full Name</label><input type="text" id="reg-d-name" required></div>
+            <div class="form-group"><label>Phone Number (Used for Login)</label><input type="tel" id="reg-d-phone" required></div>
+            <div class="form-group"><label>Blood Group</label>
+              <select id="reg-d-bg">
+                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+              </select>
+            </div>
+            <div class="form-group"><label>City</label><input type="text" id="reg-d-city" value="Delhi" required></div>
+            <div class="form-group"><label>PIN Code</label><input type="text" id="reg-d-pin" required></div>
+            <div class="form-group"><label>Times Donated Previously</label><input type="number" id="reg-d-times" value="0" min="0"></div>
+          </div>
+          <button type="submit" class="btn" style="margin-top: 1.5rem; width: 100%;">Create Donor Profile</button>
+        </form>
+      </div>
+
+      <div class="quiz-card" style="background:#f0fdf4; padding:1.5rem; border-radius:12px; border:2px solid #bbf7d0; height:fit-content;">
+        <h3 style="color:#166534; margin-bottom:1rem;">🩺 Quick Eligibility Check</h3>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>1. Are you 18-65 years old & weigh >50kg?</label>
+          <select id="quiz-1"><option value="yes">Yes</option><option value="no">No</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>2. Have you donated in the last 90 days?</label>
+          <select id="quiz-2"><option value="no">No</option><option value="yes">Yes</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>3. Do you have any active infections/fever?</label>
+          <select id="quiz-3"><option value="no">No</option><option value="yes">Yes</option></select>
+        </div>
+        <button type="button" class="btn btn-outline" style="width:100%; padding: 0.5rem;" onclick="checkQuiz()">Check Status</button>
+        <div id="quiz-result" style="margin-top: 1rem; font-weight: bold; text-align: center;"></div>
+      </div>
+    </div>
+
+    <!-- Blood Bank Registration -->
+    <div id="reg-bank-wrapper" style="display: none;">
+      <div class="card">
+        <h2>Blood Bank / Facility Setup</h2>
+        <form onsubmit="registerBank(event)">
+          <div class="grid-2">
+            <div class="form-group"><label>Facility Name</label><input type="text" id="reg-b-name" required></div>
+            <div class="form-group"><label>Facility Phone (Used for Login)</label><input type="tel" id="reg-b-phone" required></div>
+            <div class="form-group"><label>City</label><input type="text" id="reg-b-city" value="Delhi" required></div>
+            <div class="form-group"><label>PIN Code</label><input type="text" id="reg-b-pin" required></div>
+          </div>
+          <button type="submit" class="btn" style="margin-top: 1.5rem; width: 100%;">Register Facility</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TAB 5: MANAGE PROFILE ================= -->
+  <section id="tab-profile" class="tab-section">
+    <div class="card" id="profile-login" style="max-width: 500px; margin: 0 auto;">
+      <h2>Access Your Workspace</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">Enter your registered phone number to verify and edit your data.</p>
+      <div class="form-group">
+        <label>Registered Phone Number</label>
+        <input type="tel" id="auth-phone" placeholder="e.g. 9876543210" style="font-size: 1.1rem; padding: 1rem;">
+      </div>
+      <button type="button" class="btn" style="margin-top: 1rem; width: 100%;" onclick="accessProfile()">Verify & Access</button>
+    </div>
+
+    <div id="profile-workspace" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 id="workspace-title" style="color: var(--primary); font-size: 1.5rem;">Welcome</h3>
+        <button class="btn btn-outline" onclick="logoutProfile()">Secure Logout</button>
+      </div>
+
+      <!-- Donor Workspace -->
+      <div id="workspace-donor" style="display: none;">
+        <div class="card">
+          <h2>Edit Donor Profile</h2>
+          <form onsubmit="updateDonor(event)">
+            <div class="grid-2">
+              <div class="form-group"><label>Name</label><input type="text" id="edit-d-name" required></div>
+              <div class="form-group"><label>City</label><input type="text" id="edit-d-city" required></div>
+              <div class="form-group"><label>PIN Code</label><input type="text" id="edit-d-pin" required></div>
+              <div class="form-group"><label>Total Donations</label><input type="number" id="edit-d-times" required></div>
+              <div class="form-group"><label>Overall Availability</label>
+                <select id="edit-d-status"><option value="true">Available for Alerts</option><option value="false">Unavailable / Resting</option></select>
+              </div>
+            </div>
+            <button type="submit" class="btn" style="margin-top: 1.5rem;">Save Profile Updates</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>🚨 Active City-Wide Emergency Requests</h2>
+          <p style="color:#64748b; margin-bottom: 1rem;">Respond directly to individual requests below.</p>
+          <div id="donor-alerts"></div>
+        </div>
+      </div>
+
+      <!-- Bank Workspace -->
+      <div id="workspace-bank" style="display: none;">
+        <div class="card">
+          <h2>Update Inventory (Liters)</h2>
+          <form onsubmit="updateBank(event)">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
+              <div class="form-group"><label>A+</label><input type="number" step="0.1" id="edit-b-A_pos" required></div>
+              <div class="form-group"><label>A-</label><input type="number" step="0.1" id="edit-b-A_neg" required></div>
+              <div class="form-group"><label>B+</label><input type="number" step="0.1" id="edit-b-B_pos" required></div>
+              <div class="form-group"><label>B-</label><input type="number" step="0.1" id="edit-b-B_neg" required></div>
+              <div class="form-group"><label>AB+</label><input type="number" step="0.1" id="edit-b-AB_pos" required></div>
+              <div class="form-group"><label>AB-</label><input type="number" step="0.1" id="edit-b-AB_neg" required></div>
+              <div class="form-group"><label>O+</label><input type="number" step="0.1" id="edit-b-O_pos" required></div>
+              <div class="form-group"><label>O-</label><input type="number" step="0.1" id="edit-b-O_neg" required></div>
+            </div>
+            <button type="submit" class="btn" style="margin-top: 1.5rem;">Update Live Stock</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Receiver Workspace -->
+      <div id="workspace-receiver" style="display: none;">
+        <div class="card">
+          <h2>Your Active Requests</h2>
+          <div id="receiver-requests"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BOTTOM LIVE ZONE ================= -->
+  <div class="footer-live-zone">
+    <!-- Enlarged Stat Banner with Global Shortage text left, counter right -->
+    <div class="stat-banner">
+      <div class="stat-banner-content">
+        <span class="badge" style="background:#ef4444; color:#fff; font-size:0.85rem; padding:0.4rem 0.9rem;">CRITICAL GLOBAL SHORTAGE</span>
+        <h3>Every Second Without Blood Costs Lives</h3>
+        <p>
+          Around the world, thousands of patients in trauma wards, ICUs, and maternal delivery rooms fight for survival while waiting for compatible blood transfusions. Severe hemorrhages, acute surgical crises, and chronic blood disorders require immediate intervention—not delays.
+        </p>
+        <p style="margin-top: 12px;">
+          When supply chains fracture or donor turnouts drop, the consequence is immediate and tragic. Your voluntary commitment to donate 350ml bridges this fatal gap, saving up to three human lives per donation.
+        </p>
+      </div>
+
+      <div class="death-counter-box">
+        <div class="death-counter-title">
+          Lives Lost Due to Blood Shortage Since You Opened This Page
+        </div>
+        <!-- Set to start at 0 -->
+        <div class="death-counter-num" id="live-session-deaths">0</div>
+        <div class="death-counter-sub">
+          +7 casualties estimated every 5 seconds globally
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Aggregated Website Inventory -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2>🌐 Live Network Blood Volume Available (Liters)</h2>
+          <p style="color: #64748b; font-size: 0.9rem;">Real-time sum of verified blood bank reserves + available individual donors (~0.35L capacity per donor).</p>
+        </div>
+        <button class="btn btn-outline btn-small" onclick="fetchDirectory()">↻ Refresh Volume</button>
+      </div>
+      <div class="inventory-cards-grid" id="live-inventory-grid"></div>
+    </div>
+
+    <!-- Real Life Inspiring Stories -->
+    <div class="card" style="background: #faf5ff; border: 1px solid #e9d5ff;">
+      <h2 style="color: #6b21a8;">❤️ Real Stories: How Blood Donors Saved Lives</h2>
+      <p style="color: #7e22ce; font-size: 0.95rem;">Behind every request is a human being holding on for hope:</p>
+      <div class="stories-grid">
+        <div class="story-card">
+          <div class="story-quote">
+            "During my sudden delivery complications, the hospital needed 4 units of O- blood urgently. Donors who responded to the emergency alert saved my life and gave my newborn baby a mother."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">🤱</div>
+            <div>
+              <div>Meenakshi Sundaram</div>
+              <small style="color:#64748b;">Maternal Complication Survivor</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "I have Thalassemia Major and need packed blood cells every 3 weeks to survive. Every voluntary donor who shows up gives me another month of attending school, studying, and smiling."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">👦</div>
+            <div>
+              <div>Kabir Mehta (Age 16)</div>
+              <small style="color:#64748b;">Thalassemia Champion</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "A road accident on the highway resulted in severe arterial bleeding. 5 timely units from local voluntary donors brought me back from traumatic shock. Please donate regularly."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">🏍️</div>
+            <div>
+              <div>Arjun Rampal</div>
+              <small style="color:#64748b;">Trauma & Surgery Survivor</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "During my intensive chemotherapy sessions for leukemia, my platelet and hemoglobin levels dropped to life-threatening figures. Regular voluntary donors kept my fight alive until I achieved complete remission."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">🎗️</div>
+            <div>
+              <div>Shreya Sengupta</div>
+              <small style="color:#64748b;">Cancer Survivor (Remission Year 3)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "My father required an urgent open-heart bypass surgery where sudden hemorrhaging occurred on the operating table. The instant mobilization of AB+ donors across town was the difference between loss and life."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">👨‍👧</div>
+            <div>
+              <div>Rohit Batra</div>
+              <small style="color:#64748b;">Family Member of Surgery Recipient</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "Diagnosed with severe aplastic anemia, my bone marrow stopped producing red blood cells. Over 30 strangers stepped forward to donate while I waited for an immuno-match. They are the living heroes walking among us."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">🌟</div>
+            <div>
+              <div>Ayesha Khan</div>
+              <small style="color:#64748b;">Aplastic Anemia Survivor</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-quote">
+            "During emergency surgery following internal bleeding from acute pancreatitis, our local blood bank was completely out of A- units. A student donor drove 12 km through monsoon rain to donate directly. He saved my father's life."
+          </div>
+          <div class="story-author">
+            <div class="story-avatar">🌧️</div>
+            <div>
+              <div>Gaurav Nair</div>
+              <small style="color:#64748b;">Son of Emergency Patient</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="bank-modal">
+  <div class="modal">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 id="modal-bank-name">Bank Stock</h3>
+      <button onclick="closeModal()" style="border:none; background:none; font-size:1.8rem; cursor:pointer;">&times;</button>
+    </div>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead><tr style="background:#f1f5f9;"><th style="padding:0.5rem; text-align:left;">Group</th><th style="padding:0.5rem; text-align:right;">Liters</th></tr></thead>
+      <tbody id="modal-bank-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  let currentUser = null;
+  let currentRole = null;
+  let directoryData = { donors: [], banks: [] };
+
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById('tab-' + tabId).classList.add('active');
+    const activeNavBtn = document.getElementById('btn-tab-' + tabId);
+    if(activeNavBtn) activeNavBtn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (tabId === 'directory' || tabId === 'home') fetchDirectory();
+  }
+
+  function toggleRegForm(type) {
+    if(type === 'donor') {
+      document.getElementById('reg-donor-wrapper').style.display = 'grid';
+      document.getElementById('reg-bank-wrapper').style.display = 'none';
+      document.getElementById('btn-show-donor').className = 'btn';
+      document.getElementById('btn-show-bank').className = 'btn btn-outline';
+    } else {
+      document.getElementById('reg-donor-wrapper').style.display = 'none';
+      document.getElementById('reg-bank-wrapper').style.display = 'block';
+      document.getElementById('btn-show-donor').className = 'btn btn-outline';
+      document.getElementById('btn-show-bank').className = 'btn';
+    }
+  }
+
+  function getGamifiedBadge(times) {
+    if(times >= 6) return `<span class="badge badge-legend">👑 Lifeline Legend</span>`;
+    if(times >= 3) return `<span class="badge badge-hero">🦸 Haemoglobin Hero</span>`;
+    if(times >= 1) return `<span class="badge badge-rookie">🔰 RBC Rookie</span>`;
+    return `<span class="badge badge-new">Newcomer</span>`;
+  }
+
+  async function fetchDirectory() {
+    try {
+      const res = await fetch('/api/directory');
+      if (!res.ok) throw new Error('Failed to fetch from server');
+      directoryData = await res.json();
+      if(document.getElementById('tab-directory').classList.contains('active')) {
+        renderDirectory();
+      }
+      renderLiveInventory();
+    } catch(err) {
+      console.warn("Could not fetch directory. Ensure app.py is running. Error:", err);
+    }
+  }
+
+  function renderDirectory() {
+    const donors = directoryData.donors || [];
+    const banks = directoryData.banks || [];
+    
+    const search = document.getElementById('search-input').value.toLowerCase();
+    const bgFilter = document.getElementById('filter-bg').value;
+    const sortBy = document.getElementById('sort-select').value;
+    const hideUnavailable = document.getElementById('hide-unavailable').checked;
+
+    let combined = [];
+    
+    donors.forEach(d => {
+      if (hideUnavailable && !d.available) return;
+      if (bgFilter && d.bg !== bgFilter) return;
+      combined.push({ ...d, type: 'Donor' });
+    });
+    
+    banks.forEach(b => {
+      if (bgFilter && b.stock && b.stock[bgFilter] <= 0) return;
+      combined.push({ ...b, type: 'Bank' });
+    });
+
+    if (search) {
+      combined = combined.filter(item => 
+        item.name.toLowerCase().includes(search) || 
+        item.city.toLowerCase().includes(search) || 
+        (item.pin && item.pin.includes(search)) ||
+        (item.bg && item.bg.toLowerCase().includes(search))
+      );
+    }
+
+    combined.sort((a, b) => {
+      if (sortBy === 'name') return a.name.localeCompare(b.name);
+      if (sortBy === 'distance') return a.distance - b.distance;
+      return 0;
+    });
+
+    let html = '';
+    if (combined.length === 0) {
+      html = `<tr><td colspan="7" style="text-align:center; padding: 3rem; color: #94a3b8;">No results match your search criteria.</td></tr>`;
+    } else {
+      combined.forEach(item => {
+        if (item.type === 'Donor') {
+          const status = item.available ? `<span class="badge bg-green">Available</span>` : `<span class="badge bg-red">Unavailable</span>`;
+          const gBadge = getGamifiedBadge(item.times);
+          html += `<tr>
+            <td class="bg-col">${item.bg}</td>
+            <td><strong>${item.name}</strong><br><span class="badge bg-vibrant" style="margin-top:6px;">Individual Donor</span></td>
+            <td>${item.phone}</td>
+            <td>${item.city} <br><small style="color:#64748b;">PIN: ${item.pin}</small></td>
+            <td><strong>${item.distance || 3.0}</strong> km</td>
+            <td>${gBadge}</td>
+            <td>${status}</td>
+          </tr>`;
+        } else {
+          const displayBg = bgFilter ? bgFilter : 'Multi';
+          const total = item.stock ? Object.values(item.stock).reduce((a, v) => a + parseFloat(v), 0).toFixed(1) : 0;
+          html += `<tr>
+            <td class="bg-col" style="font-size: 1.3rem; color: #64748b; background:#f8fafc;">${displayBg}</td>
+            <td><strong>${item.name}</strong><br><span class="badge bg-bank" style="margin-top:6px;">Blood Bank</span></td>
+            <td>${item.phone}</td>
+            <td>${item.city} <br><small style="color:#64748b;">PIN: ${item.pin}</small></td>
+            <td><strong>${item.distance || 3.5}</strong> km</td>
+            <td>
+              <div style="font-weight:700;">${total} L Stocked</div>
+              <button class="btn btn-outline btn-small" style="margin-top:4px;" onclick="viewBankStock(${item.id})">Breakdown</button>
+            </td>
+            <td><span class="badge bg-green">Active Facility</span></td>
+          </tr>`;
+        }
+      });
+    }
+    document.getElementById('directory-body').innerHTML = html;
+  }
+
+  function viewBankStock(bankId) {
+    const bank = directoryData.banks.find(b => b.id === bankId);
+    if (!bank) return;
+    document.getElementById('modal-bank-name').innerText = bank.name;
+    let html = '';
+    for(const [bg, liters] of Object.entries(bank.stock)) {
+      if(liters > 0) {
+        html += `<tr>
+          <td style="padding:0.5rem; font-weight: 800; color: var(--primary); border-bottom: 1px solid #eee;">${bg}</td>
+          <td style="padding:0.5rem; text-align:right; border-bottom: 1px solid #eee;">${liters} L</td>
+        </tr>`;
+      }
+    }
+    document.getElementById('modal-bank-body').innerHTML = html || '<tr><td colspan="2" style="text-align:center; padding:1rem;">No Stock available</td></tr>';
+    document.getElementById('bank-modal').style.display = 'flex';
+  }
+  function closeModal() { document.getElementById('bank-modal').style.display = 'none'; }
+
+  function checkQuiz() {
+    const q1 = document.getElementById('quiz-1').value;
+    const q2 = document.getElementById('quiz-2').value;
+    const q3 = document.getElementById('quiz-3').value;
+    const res = document.getElementById('quiz-result');
+    if (q1 === 'yes' && q2 === 'no' && q3 === 'no') {
+      res.style.color = '#166534';
+      res.innerText = '✅ You are eligible to register and donate!';
+    } else {
+      res.style.color = '#991b1b';
+      res.innerText = '❌ You do not meet the criteria currently.';
+    }
+  }
+
+  // --- Safe Form Submissions ---
+  async function postRequest(e) {
+    e.preventDefault();
+    try {
+      const durationHours = parseFloat(document.getElementById('req-duration').value);
+      const now = Date.now();
+      const expiresAt = now + (durationHours * 60 * 60 * 1000);
+
+      const payload = {
+        patient: document.getElementById('req-patient').value,
+        hospital: document.getElementById('req-hospital').value,
+        phone: document.getElementById('req-phone').value,
+        bg: document.getElementById('req-bg').value,
+        city: document.getElementById('req-city').value,
+        pin: document.getElementById('req-pin').value,
+        liters: parseFloat(document.getElementById('req-liters').value),
+        urgency: document.getElementById('req-duration').options[document.getElementById('req-duration').selectedIndex].text,
+        createdAt: now,
+        expiresAt: expiresAt
+      };
+
+      const res = await fetch('/api/requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        alert(`Emergency broadcast posted! It will expire automatically in ${durationHours} hours.`);
+        e.target.reset();
+      } else {
+        const errData = await res.json();
+        alert("Server Error: " + errData.message);
+      }
+    } catch (err) {
+      alert("Network Error: Could not reach the Python server.");
+      console.error(err);
+    }
+  }
+
+  async function registerDonor(e) {
+    e.preventDefault();
+    try {
+      const payload = {
+        name: document.getElementById('reg-d-name').value,
+        phone: document.getElementById('reg-d-phone').value,
+        bg: document.getElementById('reg-d-bg').value,
+        city: document.getElementById('reg-d-city').value,
+        pin: document.getElementById('reg-d-pin').value,
+        times: parseInt(document.getElementById('reg-d-times').value) || 0
+      };
+
+      const res = await fetch('/api/donors', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(payload) 
+      });
+
+      if (res.ok) { 
+        alert('Donor profile created successfully!'); 
+        e.target.reset(); 
+        fetchDirectory(); 
+      } else { 
+        const errData = await res.json();
+        alert("Registration Failed: " + errData.message); 
+      }
+    } catch (err) {
+      alert("Network Error: Could not reach the Python server.");
+      console.error(err);
+    }
+  }
+
+  async function registerBank(e) {
+    e.preventDefault();
+    try {
+      const payload = {
+        name: document.getElementById('reg-b-name').value,
+        phone: document.getElementById('reg-b-phone').value,
+        city: document.getElementById('reg-b-city').value,
+        pin: document.getElementById('reg-b-pin').value
+      };
+
+      const res = await fetch('/api/blood-banks', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(payload) 
+      });
+
+      if (res.ok) { 
+        alert('Blood Bank registered successfully!'); 
+        e.target.reset(); 
+        fetchDirectory();
+      } else { 
+        const errData = await res.json();
+        alert("Registration Failed: " + errData.message); 
+      }
+    } catch (err) {
+      alert("Network Error: Could not reach the Python server.");
+      console.error(err);
+    }
+  }
+
+  async function accessProfile() {
+    const phone = document.getElementById('auth-phone').value.trim();
+    if (!phone) return alert('Enter phone number');
+    
+    try {
+      const res = await fetch(`/api/profile/${phone}`);
+      if (!res.ok) {
+        alert('Phone number not found. Please register first.');
+        return;
+      }
+      
+      const data = await res.json();
+      currentRole = data.role;
+      currentUser = data.user || { phone: phone };
+
+      document.getElementById('profile-login').style.display = 'none';
+      document.getElementById('profile-workspace').style.display = 'block';
+
+      if (currentRole === 'donor') loadDonorWorkspace();
+      else if (currentRole === 'bank') loadBankWorkspace();
+      else if (currentRole === 'receiver') loadReceiverWorkspace(data.requests);
+    } catch(err) {
+      alert("Network Error: Make sure your Python backend is running.");
+      console.error(err);
+    }
+  }
+
+  function logoutProfile() {
+    currentUser = null;
+    currentRole = null;
+    document.getElementById('profile-login').style.display = 'block';
+    document.getElementById('profile-workspace').style.display = 'none';
+    document.getElementById('auth-phone').value = '';
+  }
+
+  function formatTimeRemaining(ms) {
+    if (ms <= 0) return "Expired";
+    const totalSecs = Math.floor(ms / 1000);
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+    if (hrs > 0) return `${hrs}h ${mins}m left`;
+    return `${mins}m ${secs}s left`;
+  }
+
+  function loadDonorWorkspace() {
+    document.getElementById('workspace-donor').style.display = 'block';
+    document.getElementById('workspace-bank').style.display = 'none';
+    document.getElementById('workspace-receiver').style.display = 'none';
+    
+    document.getElementById('workspace-title').innerText = `Donor: ${currentUser.name}`;
+    document.getElementById('edit-d-name').value = currentUser.name;
+    document.getElementById('edit-d-city').value = currentUser.city;
+    document.getElementById('edit-d-pin').value = currentUser.pin;
+    document.getElementById('edit-d-times').value = currentUser.times;
+    document.getElementById('edit-d-status').value = currentUser.available ? "true" : "false";
+
+    renderDonorAlerts();
+  }
+
+  async function renderDonorAlerts() {
+    const alertsDiv = document.getElementById('donor-alerts');
+    if (!currentUser.available) {
+      alertsDiv.innerHTML = '<p style="color:#64748b; padding: 1rem; background: #fee2e2; border-radius: 8px;">Your profile is set to <strong>Unavailable / Resting</strong>. Switch status to Available to receive alerts.</p>';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/alerts');
+      if (!res.ok) throw new Error('Failed to fetch alerts');
+      const allReqs = await res.json();
+      const now = Date.now();
+
+      const validAlerts = allReqs.filter(r => 
+        r.bg === currentUser.bg && 
+        r.city.toLowerCase() === currentUser.city.toLowerCase() &&
+        r.expires_at > now
+      );
+
+      if (validAlerts.length > 0) {
+        alertsDiv.innerHTML = validAlerts.map(r => {
+          const donorsNeeded = Math.ceil(r.liters / 0.35);
+          const timeLeftMs = r.expires_at - now;
+          const isCriticalHour = timeLeftMs <= (60 * 60 * 1000);
+          const timerClass = isCriticalHour ? 'timer-badge timer-urgent' : 'timer-badge timer-normal';
+          
+          return `
+          <div style="background: #fffbeb; border-left: 5px solid ${isCriticalHour ? '#ef4444' : '#f59e0b'}; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+              <strong style="font-size: 1.1rem; color:#b45309;">URGENT: ${r.liters}L of ${r.bg} needed!</strong>
+              <span class="${timerClass}">⏳ ${formatTimeRemaining(timeLeftMs)}</span>
+            </div>
+            <div style="color: #475569; font-size: 0.95rem; margin-bottom: 0.5rem;">
+              Volume requires approx. <strong>${donorsNeeded} donors</strong>.
+            </div>
+            <div style="color: #475569; font-size: 0.95rem; background: #fef3c7; padding: 0.8rem; border-radius: 6px; margin-bottom: 0.8rem;">
+              <strong>Patient:</strong> ${r.patient} (${r.hospital})<br>
+              <strong>Location:</strong> ${r.city} (PIN: ${r.pin})<br>
+              <strong>Contact:</strong> <a href="tel:${r.phone}" style="color:var(--primary); font-weight:bold;">${r.phone}</a>
+            </div>
+          </div>
+        `}).join('');
+      } else {
+        alertsDiv.innerHTML = '<p style="color:#64748b; padding: 1rem; background: #f8fafc; border-radius: 8px;">No active emergency broadcasts matching your blood type right now.</p>';
+      }
+    } catch(err) {
+      alertsDiv.innerHTML = '<p style="color:#ef4444;">Cannot load alerts. Server Error.</p>';
+    }
+  }
+
+  function loadBankWorkspace() {
+    document.getElementById('workspace-donor').style.display = 'none';
+    document.getElementById('workspace-bank').style.display = 'block';
+    document.getElementById('workspace-receiver').style.display = 'none';
+    document.getElementById('workspace-title').innerText = `Facility: ${currentUser.name}`;
+    
+    ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => {
+      const id = 'edit-b-' + bg.replace('+', '_pos').replace('-', '_neg');
+      document.getElementById(id).value = currentUser.stock[bg] || 0;
+    });
+  }
+
+  function loadReceiverWorkspace(requests) {
+    document.getElementById('workspace-donor').style.display = 'none';
+    document.getElementById('workspace-bank').style.display = 'none';
+    document.getElementById('workspace-receiver').style.display = 'block';
+    document.getElementById('workspace-title').innerText = `Receiver Dashboard`;
+
+    const now = Date.now();
+    document.getElementById('receiver-requests').innerHTML = requests.map(r => {
+      const isExpired = r.expires_at <= now && r.status === 'open';
+      const timeLeftMs = r.expires_at - now;
+      const displayStatus = isExpired ? 'EXPIRED' : r.status.toUpperCase();
+      const statusBadge = isExpired ? 'bg-red' : (r.status === 'open' ? 'bg-bank' : 'bg-green');
+
+      return `
+      <div style="border:1px solid #e2e8f0; padding:1.5rem; border-radius:12px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; background: #fff;">
+        <div>
+          <strong style="font-size:1.1rem;">${r.patient} <span style="color:var(--primary);">(${r.bg})</span></strong><br>
+          <span style="color:#64748b;">${r.hospital}, ${r.city} (${r.pin})</span><br>
+          <div style="margin-top: 4px; font-weight: bold; color: var(--dark);">Total: ${r.liters} Liters</div>
+          <div style="margin-top: 8px; display:flex; align-items:center; gap:8px;">
+            Status: <span class="badge ${statusBadge}">${displayStatus}</span>
+            ${!isExpired && r.status === 'open' ? `<span class="${timeLeftMs <= 3600000 ? 'timer-badge timer-urgent' : 'timer-badge timer-normal'}">⏳ ${formatTimeRemaining(timeLeftMs)}</span>` : ''}
+          </div>
+        </div>
+        ${r.status === 'open' && !isExpired ? `<button class="btn btn-outline" onclick="resolveRequest(${r.id})">Mark Resolved</button>` : ''}
+      </div>
+    `}).join('');
+  }
+
+  async function updateDonor(e) {
+    e.preventDefault();
+    try {
+      const payload = {
+        name: document.getElementById('edit-d-name').value,
+        city: document.getElementById('edit-d-city').value,
+        pin: document.getElementById('edit-d-pin').value,
+        times: parseInt(document.getElementById('edit-d-times').value),
+        available: document.getElementById('edit-d-status').value === "true"
+      };
+      const res = await fetch(`/api/donors/${currentUser.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if(res.ok) {
+        alert('Profile updated securely!');
+        currentUser.available = payload.available;
+        renderDonorAlerts();
+        fetchDirectory();
+      }
+    } catch(err) {
+      alert("Error saving profile. Connection issue.");
+    }
+  }
+
+  async function updateBank(e) {
+    e.preventDefault();
+    try {
+      const payload = {};
+      ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => {
+        const id = 'edit-b-' + bg.replace('+', '_pos').replace('-', '_neg');
+        payload[bg] = parseFloat(document.getElementById(id).value) || 0;
+      });
+      const res = await fetch(`/api/blood-banks/${currentUser.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if(res.ok) {
+        alert('Inventory updated securely!');
+        fetchDirectory();
+      }
+    } catch(err) {
+      alert("Error saving inventory. Connection issue.");
+    }
+  }
+
+  async function resolveRequest(id) {
+    try {
+      const res = await fetch(`/api/requests/${id}/resolve`, { method: 'POST' });
+      if(res.ok) {
+        alert('Resolved!');
+        accessProfile();
+      }
+    } catch(err) {
+      alert("Error resolving request.");
+    }
+  }
+
+  function renderLiveInventory() {
+    const donors = directoryData.donors || [];
+    const banks = directoryData.banks || [];
+    const groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+    const container = document.getElementById('live-inventory-grid');
+    
+    if(!container) return;
+
+    container.innerHTML = groups.map(bg => {
+      const donorCount = donors.filter(d => d.bg === bg && d.available).length;
+      const donorVolumeL = donorCount * 0.35;
+      const bankVolumeL = banks.reduce((sum, b) => sum + (parseFloat(b.stock && b.stock[bg]) || 0), 0);
+      const totalVolume = (donorVolumeL + bankVolumeL).toFixed(1);
+
+      return `
+        <div class="inventory-box">
+          <div class="grp">${bg}</div>
+          <div class="liters">${totalVolume} L</div>
+          <small style="color:#64748b; font-size:0.75rem;">${donorCount} donors + ${bankVolumeL.toFixed(1)}L bank</small>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // --- Live Session Casualties Counter (Starts at 0, +7 every 5 seconds) ---
+  let sessionDeaths = 0;
+  function startSessionDeathCounter() {
+    const el = document.getElementById('live-session-deaths');
+    if(!el) return;
+    setInterval(() => {
+      sessionDeaths += 7;
+      el.innerText = sessionDeaths.toLocaleString();
+    }, 5000);
+  }
+
+  // --- Live Countdown Loop ---
+  setInterval(() => {
+    if (currentRole === 'donor' && document.getElementById('tab-profile').classList.contains('active')) {
+      renderDonorAlerts();
+    }
+  }, 1000);
+
+  // Boot
+  fetchDirectory();
+  startSessionDeathCounter();
+</script>
+</body>
+</html>
